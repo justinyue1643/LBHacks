@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LBHacks</string>
+    <string name="home_route">Home</string>
+    <string name="camera_route">Camera</string>
 </resources>
