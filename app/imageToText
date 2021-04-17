@@ -11,3 +11,127 @@ def ocr_core(image_path):
   
  # Article with potential code for integrating the above with Flask: https://stackabuse.com/pytesseract-simple-python-optical-character-recognition/"
 
+
+"""
+#define a basic route in python:
+from flask import Flask, render_template
+app = Flask(__name__)
+
+@app.route('/')
+def home_page():
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run()
+
+
+
+
+#template folder for HTML files:
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Index</title>
+  </head>
+  <body>
+    Hello World.
+  </body>
+</html>
+
+
+
+
+
+
+#potential Python code for integrating with Flask
+import os
+from flask import Flask, render_template, request
+
+# import our OCR function
+from ocr_core import ocr_core
+
+# define a folder to store and later serve the images
+UPLOAD_FOLDER = '/static/uploads/'
+
+# allow files of a specific type
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
+app = Flask(__name__)
+
+# function to check the file extension
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# route and function to handle the home page
+@app.route('/')
+def home_page():
+    return render_template('index.html')
+
+# route and function to handle the upload page
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_page():
+    if request.method == 'POST':
+        # check if there is a file in the request
+        if 'file' not in request.files:
+            return render_template('upload.html', msg='No file selected')
+        file = request.files['file']
+        # if no file is selected
+        if file.filename == '':
+            return render_template('upload.html', msg='No file selected')
+
+        if file and allowed_file(file.filename):
+
+            # call the OCR function on it
+            extracted_text = ocr_core(file)
+
+            # extract the text and display it
+            return render_template('upload.html',
+                                   msg='Successfully processed',
+                                   extracted_text=extracted_text,
+                                   img_src=UPLOAD_FOLDER + file.filename)
+    elif request.method == 'GET':
+        return render_template('upload.html')
+
+if __name__ == '__main__':
+    app.run()
+
+
+
+
+
+
+
+#HTML that handles posting of image:
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Upload Image</title>
+ </head>
+ <body>
+
+   {% if msg %}
+   <h1>{{ msg }}</h1>
+   {% endif %}
+  
+   <h1>Upload new File</h1>
+  
+   <form method=post enctype=multipart/form-data>
+     <p><input type=file name=file>
+        <input type=submit value=Upload>
+   </form>
+
+   <h1>Result:</h1>
+   {% if img_src %}
+     <img src="{{ img_src }}">
+   {% endif %}
+  
+   {% if extracted_text %}
+     <p> The extracted text from the image above is: <b> {{ extracted_text }} </b></p>
+  
+   {% else %}
+     The extracted text will be displayed here
+   {% endif %}
+ </body>
+</html>
+"""
