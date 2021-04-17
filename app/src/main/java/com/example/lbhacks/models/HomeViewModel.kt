@@ -17,4 +17,8 @@ class HomeViewModel: ViewModel() {
     fun removeProblem(index: Int): Unit {
         listOfProblems.removeAt(index)
     }
+
+    fun sendSolution(): Unit {
+
+    }
 }

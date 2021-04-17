@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.compose.runtime.getValue;
 import androidx.compose.runtime.setValue;
+import com.example.lbhacks.data.Problem
 import com.example.lbhacks.models.HomeViewModel
 
 @Preview(backgroundColor = 0xffffff, showBackground = true)
@@ -31,8 +32,15 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
         Box() {
             LoadMoreButton()
             for (i in 0..problems.size - 1) {
-                ProblemCard(problems[i], onDismissed = {viewModel.removeProblem(i)})
+                ProblemCard(
+                    problems[i],
+                    onDismissed = {viewModel.removeProblem(i)},
+                    onClick = {navigateToCameraScreen(problems[i])})
             }
         }
     }
+}
+
+fun navigateToCameraScreen(p: Problem) {
+
 }

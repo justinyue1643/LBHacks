@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.calculateTargetValue
 import androidx.compose.animation.splineBasedDecay
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.verticalDrag
 import androidx.compose.foundation.layout.*
@@ -82,13 +83,14 @@ private fun Modifier.swipeToDismiss(
 }
 
 @Composable
-fun ProblemCard(problem: Problem, onDismissed: () -> Unit) {
+fun ProblemCard(problem: Problem, onClick: () -> Unit, onDismissed: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.9f)
             .padding(16.dp)
-            .swipeToDismiss(onDismissed),
+            .swipeToDismiss(onDismissed)
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(10.dp),
         backgroundColor = Color.Yellow,
         elevation = 5.dp,
