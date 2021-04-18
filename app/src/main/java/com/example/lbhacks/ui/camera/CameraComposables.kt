@@ -25,11 +25,11 @@ fun PreviewFailureDialog() {
 @Composable
 fun SuccessDialog(viewModel: CameraViewModel) {
     AlertDialog(
-        onDismissRequest = {viewModel.isSuccess = false},
+        onDismissRequest = {viewModel.isSuccess.value = false},
         title = {Text("Success")},
         text = {Text("You have passed all test cases!")},
         confirmButton = {
-            Button(onClick = {}) {
+            Button(onClick = {viewModel.isSuccess.value = false}) {
                 Text("Go back")
             }
         }
@@ -39,7 +39,7 @@ fun SuccessDialog(viewModel: CameraViewModel) {
 @Composable
 fun FailureDialog(viewModel: CameraViewModel) {
     AlertDialog(
-        onDismissRequest = {viewModel.isSuccess = false},
+        onDismissRequest = {viewModel.isFailure.value = true},
         title = {Text("Wrong")},
         text = {Text("You missed some test cases...")},
         confirmButton = {
