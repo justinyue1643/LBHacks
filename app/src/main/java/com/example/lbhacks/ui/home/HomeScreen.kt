@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.compose.runtime.getValue;
 import androidx.compose.runtime.setValue;
+import androidx.navigation.compose.navigate
 import com.example.lbhacks.data.Problem
 import com.example.lbhacks.models.HomeViewModel
 
@@ -19,11 +20,11 @@ import com.example.lbhacks.models.HomeViewModel
 @Composable
 fun PreviewHome() {
     val context = LocalContext.current
-    HomeScreen(navHostController = NavHostController(context))
+    HomeScreen(navHostController = NavHostController(context), nestedNavHostController = NavHostController(context))
 }
 
 @Composable
-fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(navHostController: NavHostController, nestedNavHostController: NavHostController, viewModel: HomeViewModel = viewModel()) {
     var problems = remember { viewModel.listOfProblems }
 
     Column(
@@ -35,12 +36,12 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                 ProblemCard(
                     problems[i],
                     onDismissed = {viewModel.removeProblem(i)},
-                    onClick = {::navigateToCameraScreen})
+                    onClick = {navigateToCameraScreen(problems[i], nestedNavHostController)})
             }
         }
     }
 }
 
-fun navigateToCameraScreen(p: Problem) {
-    println("card has been clicked")
+fun navigateToCameraScreen(p: Problem, navHostController: NavHostController) {
+    navHostController.navigate("solution camera")
 }

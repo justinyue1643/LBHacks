@@ -44,13 +44,13 @@ fun PreviewCameraScreen() {
 }
 
 @Composable
-fun CameraScreen(navHostController: NavHostController, outputDirectory: File, viewModel: CameraViewModel = CameraViewModel()) {
+fun CameraScreen(ratio: Float, navHostController: NavHostController, outputDirectory: File, viewModel: CameraViewModel = CameraViewModel()) {
     var isSuccess = remember { mutableStateOf(false) }
     var isFailure = remember { mutableStateOf(false) }
 
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight(0.9f)) {
+        .fillMaxHeight(ratio)) {
         CameraPreview(outputDirectory, viewModel, isSuccess)
 
         if (isSuccess.value) {

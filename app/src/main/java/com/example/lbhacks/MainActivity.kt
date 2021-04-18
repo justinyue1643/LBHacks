@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 LBHacksTheme {
                     // A surface container using the 'background' color from the theme
                     Surface(color = MaterialTheme.colors.background) {
-                        App(outputDirectory)
+                        AppThatNests(outputDirectory)
                     }
                 }
             }
@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                     LBHacksTheme {
                         // A surface container using the 'background' color from the theme
                         Surface(color = MaterialTheme.colors.background) {
-                            App(outputDirectory)
+                            AppThatNests(outputDirectory)
                         }
                     }
                 }
@@ -94,7 +94,18 @@ sealed class Screen(val icon: Int, val route: String, @StringRes resourceId: Int
 }
 
 @Composable
-fun App(outputDirectory: File) {
+fun AppThatNests(outputDirectory: File) {
+    val navController = rememberNavController()
+    NavHost(navController, startDestination = "nested") {
+        navigation(startDestination = "home screens", route = "nested") {
+            composable("home screens") { App(outputDirectory, navController)}
+        }
+        composable("solution camera") { CameraScreen(1.0f, navHostController = navController, outputDirectory = outputDirectory)}
+    }
+}
+
+@Composable
+fun App(outputDirectory: File, navHostController: NavHostController) {
     val navController: NavHostController = rememberNavController()
 
     val navItems = listOf(
@@ -125,8 +136,8 @@ fun App(outputDirectory: File) {
         }
     ) {
         NavHost(navController = navController, startDestination = "Home") {
-            composable("Home") { HomeScreen(navController)}
-            composable("Camera") { CameraScreen(navController, outputDirectory)}
+            composable("Home") { HomeScreen(navController, navHostController)}
+            composable("Camera") { CameraScreen(0.9f, navController, outputDirectory)}
         }
     }
 }
