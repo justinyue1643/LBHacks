@@ -21,6 +21,9 @@ def word_coordinates(image_path):
 
 print(word_coordinates(image_path))
 
+
+## for instance, if data['text'][4] evaluates to 'import', then word_coordinates(image_path)[4] gives ('import', 52, 14, 9, 8) 
+
   
   
   
