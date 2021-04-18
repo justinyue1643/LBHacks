@@ -100,7 +100,8 @@ fun AppThatNests(outputDirectory: File) {
         navigation(startDestination = "home screens", route = "nested") {
             composable("home screens") { App(outputDirectory, navController)}
         }
-        composable("solution camera") { CameraScreen(1.0f, navHostController = navController, outputDirectory = outputDirectory)}
+        composable("solution success camera") { CameraScreen(1.0f, navHostController = navController, outputDirectory = outputDirectory,true, addingProblem = false)}
+        composable("solution failure camera") { CameraScreen(1.0f, navHostController = navController, outputDirectory = outputDirectory,false, addingProblem = false)}
     }
 }
 
@@ -137,7 +138,7 @@ fun App(outputDirectory: File, navHostController: NavHostController) {
     ) {
         NavHost(navController = navController, startDestination = "Home") {
             composable("Home") { HomeScreen(navController, navHostController)}
-            composable("Camera") { CameraScreen(0.9f, navController, outputDirectory)}
+            composable("Camera") { CameraScreen(0.9f, navController, outputDirectory, true, addingProblem = true)}
         }
     }
 }
