@@ -89,8 +89,7 @@ fun ProblemCard(problem: Problem, onClick: () -> Unit, onDismissed: () -> Unit) 
             .fillMaxWidth()
             .fillMaxHeight(0.9f)
             .padding(16.dp)
-            .swipeToDismiss(onDismissed)
-            .clickable(onClick = onClick),
+            .swipeToDismiss(onDismissed),
         shape = RoundedCornerShape(10.dp),
         backgroundColor = Color.Yellow,
         elevation = 5.dp,
@@ -165,8 +164,14 @@ fun ProblemCard(problem: Problem, onClick: () -> Unit, onDismissed: () -> Unit) 
                     style = TextStyle(
                         fontSize = 16.sp,
                         color = Color.White
+                    )
                 )
-                )
+            }
+
+            Button(
+                onClick = {onClick()},
+                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
+                Text("Solve!")
             }
         }
     }

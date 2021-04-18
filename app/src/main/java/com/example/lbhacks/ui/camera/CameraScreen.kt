@@ -14,7 +14,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
+import com.example.lbhacks.models.CameraViewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,15 +45,29 @@ fun PreviewCameraScreen() {
 }
 
 @Composable
-fun CameraScreen(navHostController: NavHostController, outputDirectory: File) {
-    Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f)) {
-        CameraPreview(outputDirectory)
+fun CameraScreen(navHostController: NavHostController, outputDirectory: File, viewModel: CameraViewModel = CameraViewModel()) {
+    var isSuccess by remember { mutableStateOf(false) }
+    var isFailure by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight(0.4f)) {
+        CameraPreview(outputDirectory, viewModel, isSuccess)
+
+
+        if (isSuccess) {
+            SuccessDialog(viewModel)
+        }
+
+        if (isFailure) {
+            FailureDialog(viewModel)
+        }
     }
 }
 
 //Not really sure where to put and call this, still need to test
 @Composable
-fun CameraPreview(outputDirectory: File) {
+fun CameraPreview(outputDirectory: File, viewModel: CameraViewModel, isSuccess: Boolean) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -103,6 +121,10 @@ fun CameraPreview(outputDirectory: File) {
                             val msg = "Photo capture succeeded: $savedUri"
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                             Log.d("TEST", msg)
+
+                            println("CAMERA SCREEN: ABOUT TO SEND PICTURE")
+                            viewModel.getImageSize(photoFile)
+                            isSuccess = true
                         }
                     })
             },

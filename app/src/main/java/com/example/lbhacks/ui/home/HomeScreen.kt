@@ -35,12 +35,12 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                 ProblemCard(
                     problems[i],
                     onDismissed = {viewModel.removeProblem(i)},
-                    onClick = {navigateToCameraScreen(problems[i])})
+                    onClick = {::navigateToCameraScreen})
             }
         }
     }
 }
 
 fun navigateToCameraScreen(p: Problem) {
-
+    println("card has been clicked")
 }
