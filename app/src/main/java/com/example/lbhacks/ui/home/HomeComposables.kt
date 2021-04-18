@@ -106,24 +106,28 @@ fun ProblemCard(problem: Problem, onClick: () -> Unit, onDismissed: () -> Unit) 
                 modifier = Modifier.padding(16.dp)
             ) {
 
-                Text(
-                    problem.title,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 32.sp,
-                        color = Color.White
+                problem.title?.let {
+                    Text(
+                        it,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 32.sp,
+                            color = Color.White
+                        )
                     )
-                )
+                }
 
                 Spacer(modifier = Modifier.size(10.dp))
 
-                Text(
-                    problem.description,
-                    style = TextStyle(
-                        color = Color.White,
-                        fontSize = 16.sp
+                problem.description?.let {
+                    Text(
+                        it,
+                        style = TextStyle(
+                            color = Color.White,
+                            fontSize = 16.sp
+                        )
                     )
-                )
+                }
 
                 Spacer(modifier = Modifier.size(20.dp))
 
@@ -138,13 +142,15 @@ fun ProblemCard(problem: Problem, onClick: () -> Unit, onDismissed: () -> Unit) 
 
                 Spacer(modifier = Modifier.size(30.dp))
 
-                Text(
-                    problem.sampleInput,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = Color.White
+                problem.sampleInput?.let {
+                    Text(
+                        it,
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            color = Color.White
+                        )
                     )
-                )
+                }
 
                 Spacer(modifier = Modifier.size(20.dp))
 
@@ -178,14 +184,14 @@ fun ProblemCard(problem: Problem, onClick: () -> Unit, onDismissed: () -> Unit) 
 }
 
 @Composable
-fun LoadMoreButton() {
+fun LoadMoreButton(onClick: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Button(
-            onClick = {println("clicked")}
+            onClick = {onClick()}
         ) {
             Text("Load more problems!")
         }

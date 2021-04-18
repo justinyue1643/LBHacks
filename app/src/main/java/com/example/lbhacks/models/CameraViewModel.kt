@@ -36,4 +36,14 @@ class CameraViewModel: ViewModel() {
         }
     }
 
+    fun addProblem(f: File) {
+        viewModelScope.launch {
+            try {
+
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
 }

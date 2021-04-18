@@ -25,13 +25,15 @@ fun PreviewHome() {
 
 @Composable
 fun HomeScreen(navHostController: NavHostController, nestedNavHostController: NavHostController, viewModel: HomeViewModel = viewModel()) {
-    var problems = remember { viewModel.listOfProblems }
+    var problems = viewModel.listOfProblems
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         Box() {
-            LoadMoreButton()
+            LoadMoreButton(
+                onClick = {viewModel.getMoreProblems()}
+            )
             for (i in 0..problems.size - 1) {
                 ProblemCard(
                     problems[i],
