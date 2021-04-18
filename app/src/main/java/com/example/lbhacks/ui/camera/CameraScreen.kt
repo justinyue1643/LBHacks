@@ -53,12 +53,31 @@ fun CameraScreen(ratio: Float, navHostController: NavHostController, outputDirec
         .fillMaxHeight(ratio)) {
         CameraPreview(outputDirectory, viewModel, isSuccess)
 
+
         if (isSuccess.value) {
-            SuccessDialog(viewModel)
+            AlertDialog(
+                onDismissRequest = {isSuccess.value = false},
+                title = {Text("Success")},
+                text = {Text("You have passed all test cases!")},
+                confirmButton = {
+                    Button(onClick = {isSuccess.value = false}) {
+                        Text("Go back")
+                    }
+                }
+            )
         }
 
         if (isFailure.value) {
-            FailureDialog(viewModel)
+            AlertDialog(
+                onDismissRequest = {isFailure.value = false},
+                title = {Text("Wrong")},
+                text = {Text("You missed some test cases...")},
+                confirmButton = {
+                    Button(onClick = {isFailure.value = false}) {
+                        Text("Go back")
+                    }
+                }
+            )
         }
     }
 }
