@@ -1,11 +1,19 @@
 import pytesseract as tess
 from PIL import Image
-tess.pytesseract.tesseract_cmd = r'***Path to tesseract.exe file on computer***'
+tess.pytesseract.tesseract_cmd = r'**path to tesseract.exe on computer**'
 def ocr_core(image_path):
   text = tess.image_to_string(Image.open(image_path))
   return text
   
-print(ocr_core(image_path))
+f = open('text.txt', 'w')
+string = ocr_core(image_path)
+string = string.replace("‘", '"')
+string = string.replace("’", '"')
+string = string.replace("'", '"')
+string = string.replace("“", '"')
+string = string.replace("”", '"')
+
+f.write(string)
 
 def word_coordinates(image_path):
   img = Image.open(image_path)
