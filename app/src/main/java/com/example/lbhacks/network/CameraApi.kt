@@ -1,5 +1,6 @@
 package com.example.lbhacks.network
 
+import com.example.lbhacks.data.Problem
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.MultipartBody
@@ -23,7 +24,7 @@ interface CameraApiService {
     suspend fun getProblems(): Map<String, String>
 
     @POST("/problems")
-    suspend fun addProblem(): Map<String, String>
+    suspend fun addProblem(@Body p: Problem): Map<String, String>
 
     @POST("/checkSolution")
     suspend fun checkSolution(): Map<String, String>

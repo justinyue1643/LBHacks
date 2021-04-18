@@ -44,7 +44,7 @@ fun PreviewCameraScreen() {
 }
 
 @Composable
-fun CameraScreen(ratio: Float, navHostController: NavHostController, outputDirectory: File, viewModel: CameraViewModel = CameraViewModel()) {
+fun CameraScreen(ratio: Float, navHostController: NavHostController, outputDirectory: File, viewModel: CameraViewModel = CameraViewModel(), addingProblem: Boolean = true) {
     var isSuccess = remember { mutableStateOf(false) }
     var isFailure = remember { mutableStateOf(false) }
 
