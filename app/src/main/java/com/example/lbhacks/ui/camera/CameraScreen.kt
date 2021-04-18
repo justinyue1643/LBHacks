@@ -12,12 +12,11 @@ import androidx.camera.view.PreviewView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,20 +45,19 @@ fun PreviewCameraScreen() {
 
 @Composable
 fun CameraScreen(navHostController: NavHostController, outputDirectory: File, viewModel: CameraViewModel = CameraViewModel()) {
-    var isSuccess by remember { mutableStateOf(false) }
-    var isFailure by remember { mutableStateOf(false) }
+    var isSuccess = remember { mutableStateOf(false) }
+    var isFailure = remember { mutableStateOf(false) }
 
     Column(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight(0.4f)) {
+        .fillMaxHeight(0.9f)) {
         CameraPreview(outputDirectory, viewModel, isSuccess)
 
-
-        if (isSuccess) {
+        if (isSuccess.value) {
             SuccessDialog(viewModel)
         }
 
-        if (isFailure) {
+        if (isFailure.value) {
             FailureDialog(viewModel)
         }
     }
@@ -67,7 +65,7 @@ fun CameraScreen(navHostController: NavHostController, outputDirectory: File, vi
 
 //Not really sure where to put and call this, still need to test
 @Composable
-fun CameraPreview(outputDirectory: File, viewModel: CameraViewModel, isSuccess: Boolean) {
+fun CameraPreview(outputDirectory: File, viewModel: CameraViewModel, isSuccess: MutableState<Boolean>) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -124,7 +122,7 @@ fun CameraPreview(outputDirectory: File, viewModel: CameraViewModel, isSuccess: 
 
                             println("CAMERA SCREEN: ABOUT TO SEND PICTURE")
                             viewModel.getImageSize(photoFile)
-                            isSuccess = true
+                            isSuccess.value = true
                         }
                     })
             },
@@ -138,5 +136,4 @@ fun CameraPreview(outputDirectory: File, viewModel: CameraViewModel, isSuccess: 
 
         }
     }
-
 }
