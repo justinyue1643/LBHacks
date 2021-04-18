@@ -15,7 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,17 +43,17 @@ fun PreviewCameraScreen() {
 }
 
 @Composable
-fun CameraScreen(ratio: Float, navHostController: NavHostController, outputDirectory: File, viewModel: CameraViewModel = CameraViewModel()) {
+fun CameraScreen(ratio: Float, navHostController: NavHostController, outputDirectory: File, success: Boolean, viewModel: CameraViewModel = CameraViewModel()) {
     var isSuccess = remember { mutableStateOf(false) }
     var isFailure = remember { mutableStateOf(false) }
-
+    
     Column(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(ratio)) {
-        CameraPreview(outputDirectory, viewModel, isSuccess)
+        .fillMaxHeight(ratio)
+        .fillMaxWidth()) {
+        CameraPreview(outputDirectory, viewModel, isSuccess, isFailure)
 
 
-        if (isSuccess.value) {
+        if (isSuccess.value && success) {
             AlertDialog(
                 onDismissRequest = {isSuccess.value = false},
                 title = {Text("Success")},
@@ -66,8 +65,7 @@ fun CameraScreen(ratio: Float, navHostController: NavHostController, outputDirec
                 }
             )
         }
-
-        if (isFailure.value) {
+        else if (isFailure.value && !success) {
             AlertDialog(
                 onDismissRequest = {isFailure.value = false},
                 title = {Text("Wrong")},
@@ -84,7 +82,7 @@ fun CameraScreen(ratio: Float, navHostController: NavHostController, outputDirec
 
 //Not really sure where to put and call this, still need to test
 @Composable
-fun CameraPreview(outputDirectory: File, viewModel: CameraViewModel, isSuccess: MutableState<Boolean>) {
+fun CameraPreview(outputDirectory: File, viewModel: CameraViewModel, isSuccess: MutableState<Boolean>, isFailure: MutableState<Boolean>) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -142,6 +140,8 @@ fun CameraPreview(outputDirectory: File, viewModel: CameraViewModel, isSuccess: 
                             println("CAMERA SCREEN: ABOUT TO SEND PICTURE")
                             viewModel.getImageSize(photoFile)
                             isSuccess.value = true
+                            isFailure.value = true
+
                         }
                     })
             },

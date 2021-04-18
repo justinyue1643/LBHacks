@@ -36,12 +36,20 @@ fun HomeScreen(navHostController: NavHostController, nestedNavHostController: Na
                 ProblemCard(
                     problems[i],
                     onDismissed = {viewModel.removeProblem(i)},
-                    onClick = {navigateToCameraScreen(problems[i], nestedNavHostController)})
+                    onClick = {
+                        if (i%2==0) {
+                            navigateToCameraScreen(problems[i], nestedNavHostController, true)
+                        }
+                        else navigateToCameraScreen(problems[i], nestedNavHostController, false)
+                    })
             }
         }
     }
 }
 
-fun navigateToCameraScreen(p: Problem, navHostController: NavHostController) {
-    navHostController.navigate("solution camera")
+fun navigateToCameraScreen(p: Problem, navHostController: NavHostController, b: Boolean) {
+    if (b) {
+        navHostController.navigate("solution success camera")
+    }
+    else navHostController.navigate("solution failure camera")
 }
